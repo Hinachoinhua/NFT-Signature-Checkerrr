@@ -1,0 +1,206 @@
+body {
+  background: linear-gradient(120deg, #0f2027 0%, #2c5364 100%);
+  font-family: 'Quicksand', Arial, Helvetica, Tahoma, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.logo-fpt {
+  width: 120px;
+  margin-top: 40px;
+  margin-bottom: 18px;
+  display: block;
+  border-radius: 20px;
+  box-shadow: 0 0 32px 0 #00fff7, 0 0 0 8px #ff00cc;
+  border: 3px solid #ff00cc;
+  background: #181a1b;
+  padding: 10px;
+  transition: box-shadow 0.2s, transform 0.2s;
+  filter: brightness(1.1) contrast(1.2);
+}
+.logo-fpt:hover {
+  box-shadow: 0 0 64px 12px #00fff7, 0 0 0 16px #ff00cc;
+  transform: scale(1.07) rotate(-2deg);
+}
+
+h1 {
+  color: #0066cc;
+}
+
+h2 {
+  margin-top: 18px;
+  color: #fff;
+  letter-spacing: 2px;
+  font-weight: 800;
+  font-size: 2rem;
+  text-shadow: 0 0 12px #00fff7, 0 0 32px #ff00cc, 2px 2px 0 #181a1b;
+  border: none;
+  border-radius: 20px;
+  padding: 14px 36px;
+  background: rgba(24, 26, 27, 0.85);
+  box-shadow: 0 0 32px #ff00cc55;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+h2::before {
+  content: "💾";
+  font-size: 2rem;
+  margin-right: 10px;
+  filter: drop-shadow(0 0 8px #00fff7);
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  0% { filter: drop-shadow(0 0 8px #00fff7);}
+  100% { filter: drop-shadow(0 0 24px #ff00cc);}
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+#url {
+  padding: 14px;
+  border: 2.5px solid #ff00cc;
+  border-radius: 16px;
+  font-size: 1rem;
+  width: 340px;
+  max-width: 90vw;
+  box-shadow: 0 2px 16px #00fff799;
+  background: #181a1b;
+  color: #fff;
+  margin-top: 12px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+#url:focus {
+  border: 2.5px solid #00fff7;
+  outline: none;
+  box-shadow: 0 0 24px #ff00cc;
+  background: #222;
+}
+
+button {
+  background: linear-gradient(90deg, #ff00cc 0%, #00fff7 100%);
+  color: #181a1b;
+  border: 2.5px solid #00fff7;
+  border-radius: 16px;
+  padding: 14px 32px;
+  margin: 12px 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s, color 0.2s;
+  box-shadow: 0 2px 16px #ff00cc99;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-shadow: 0 1px 0 #fff, 0 0 8px #00fff7;
+  position: relative;
+  overflow: hidden;
+}
+button:hover {
+  background: linear-gradient(90deg, #00fff7 0%, #ff00cc 100%);
+  color: #fff;
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow: 0 0 32px #00fff7;
+}
+button::after {
+  content: "⚡";
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 1.2rem;
+  animation: cyber-glow 1s infinite alternate;
+}
+@keyframes cyber-glow {
+  0% { opacity: 0.6; filter: blur(0);}
+  100% { opacity: 1; filter: blur(2px);}
+}
+
+#output {
+  background: #181a1b;
+  border: 2.5px solid #00fff7;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 28px;
+  width: 420px;
+  max-width: 95vw;
+  min-height: 40px;
+  font-size: 1rem;
+  color: #00fff7;
+  box-shadow: 0 2px 24px #ff00cc99;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-weight: 700;
+  text-shadow: 0 0 8px #ff00cc;
+}
+
+#team {
+  background: rgba(24, 26, 27, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 0 32px #ff00cc99, 0 0 0 4px #00fff7;
+  padding: 28px 36px;
+  margin: 26px 0 16px 0;
+  width: 420px;
+  max-width: 95vw;
+  border: 2px solid #ff00cc;
+  text-align: center;
+}
+#team h3 {
+  margin-top: 0;
+  color: #00fff7;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #ff00cc;
+}
+#team ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#team li {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  background: #181a1b;
+  border-radius: 12px;
+  padding: 8px 18px;
+  border-left: 4px solid #00fff7;
+  border-right: 4px solid #ff00cc;
+  transition: background 0.2s, transform 0.2s, color 0.2s;
+  box-shadow: 0 2px 12px #ff00cc33;
+  text-shadow: 0 0 8px #00fff7;
+}
+#team li:hover {
+  background: #ff00cc;
+  color: #00fff7;
+  transform: scale(1.04) skew(-2deg, 2deg);
+}
+#team li::before {
+  content: "🚀";
+  font-size: 1.1rem;
+  filter: drop-shadow(0 0 6px #00fff7);
+  animation: shake 1s infinite alternate;
+}
+@keyframes shake {
+  0% { transform: rotate(-8deg);}
+  100% { transform: rotate(8deg);}
+}
+
+.main-action {
+  font-family: 'Segoe UI', Arial, sans-serif !important;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
