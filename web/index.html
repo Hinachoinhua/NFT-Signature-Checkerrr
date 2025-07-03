@@ -9,22 +9,49 @@
   <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <img class="logo-fpt" src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8Dc_FPT.svg.png?20240228115915" 
-       alt="FPT University Logo">
-  <h2>Gắn hoặc kiểm tra chữ ký NFT</h2>
-  <div id="team">
+  <nav class="navbar">
+  <div class="navbar-left">
+    <a href="index.html" class="navbar-logo-link" style="text-decoration:none;">
+      <div class="navbar-logo-box">
+        <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg.png?20240228115915"
+             alt="FPT University Logo" class="navbar-logo">
+        <img src="https://cusc.vn/themes/cusc/images/cusc/logo/CUSC%20Logo%20Series.png"
+             alt="Logo dự án" class="navbar-logo">
+      </div>
+    </a>
+    <span class="navbar-title">NFT Signature Checker</span>
+  </div>
+  <div class="navbar-right">
+    <a href="about.html">Giới thiệu</a>
+    <a href="guide.html">Hướng dẫn sử dụng</a>
+    <a href="history.html">Lịch sử URL</a>
+    <a href="account.html" id="login-link">Tài khoản</a>
+  </div>
+</nav>
+  <div id="main-content">
+    <h2>Gắn hoặc kiểm tra chữ ký NFT</h2>
+    <input type="text" id="url" placeholder="Nhập URL ảnh/video" size="60">
+    <br><br>
+    <div class="button-row">
+      <button class="main-action" onclick="signUrl()">Gắn chữ ký</button>
+      <button class="main-action" onclick="verifyUrl()">Kiểm tra</button>
+    </div>
+    <pre id="output"></pre>
+
+    <div id="history" style="display:none;">
+      <h3>Lịch sử các URL đã gắn chữ ký</h3>
+      <ul id="history-list"></ul>
+    </div>
+  </div>
+
+
+  <footer id="team">
     <h3>Thành viên nhóm</h3>
     <ul>
-      <li><strong>Nguyễn Văn A</strong> – Trưởng nhóm</li>
-      <li><strong>Trần Thị B</strong> – Backend</li>
-      <li><strong>Lê Văn C</strong> – Frontend</li>
-      <li><strong>Phạm Thị D</strong> – Tester</li>
+      <li><strong>Huỳnh Tấn Bảo</strong></li>
+      <li><strong>Nguyễn Khánh Trâm</strong></li>
+      <li><strong>Đái Sĩ Hào</strong></li>
     </ul>
-  </div>
-  <input type="text" id="url" placeholder="Nhập URL ảnh/video" size="60">
-  <br><br>
-  <button class="main-action" onclick="signUrl()">Gắn chữ ký</button>
-  <button class="main-action" onclick="verifyUrl()">Kiểm tra</button>
-  <pre id="output"></pre>
+  </footer>
 </body>
 </html>

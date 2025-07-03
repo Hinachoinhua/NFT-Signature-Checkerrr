@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tài khoản</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="navbar-logo-link" style="text-decoration:none;">
+        <div class="navbar-logo-box">
+          <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg.png?20240228115915"
+               alt="FPT University Logo" class="navbar-logo">
+          <img src="https://cusc.vn/themes/cusc/images/cusc/logo/CUSC%20Logo%20Series.png"
+               alt="Logo dự án" class="navbar-logo">
+        </div>
+      </a>
+      <span class="navbar-title">NFT Signature Checker</span>
+    </div>
+    <div class="navbar-right">
+      <a href="about.html">Giới thiệu</a>
+      <a href="guide.html">Hướng dẫn sử dụng</a>
+      <a href="history.html">Lịch sử URL</a>
+      <a href="account.html" id="login-link">Tài khoản</a>
+    </div>
+  </nav>
+  <div class="login-container" id="account-info" style="margin-top:40px;">
+    <h2>Thông tin tài khoản</h2>
+    <div id="user-info"></div>
+  </div>
+  <script>
+  // Kiểm tra đăng nhập và lấy thông tin user
+  window.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const res = await fetch('/me');
+      if (res.status === 200) {
+        const data = await res.json();
+        let html = `
+          <div><b>Tên đăng nhập:</b> ${data.username}</div>
+          <div><b>Email:</b> ${data.email}</div>
+          <div><b>Quyền:</b> ${data.is_admin ? "Quản trị viên" : "Người dùng thường"}</div>
+          <button class="main-action" onclick="logoutAndReload()">Đăng xuất</button>
+        `;
+        if (data.is_admin) {
+          html += `
+            <button class="main-action" style="margin-top:14px;" onclick="window.location.href='admin.html'">
+              Quản lý tài khoản người dùng
+            </button>
+          `;
+        }
+        document.getElementById('user-info').innerHTML = html;
+      } else {
+        document.getElementById('user-info').innerHTML = `
+          <div style="color:#ff9800;font-weight:600;text-align:center;">
+            Bạn chưa đăng nhập tài khoản, vui lòng <a href="login.html">đăng nhập</a> để sử dụng chức năng này.
+          </div>
+        `;
+      }
+    } catch {
+      document.getElementById('user-info').innerHTML = `
+        <div style="color:#ff9800;font-weight:600;text-align:center;">
+          Bạn chưa đăng nhập tài khoản, vui lòng <a href="login.html">đăng nhập</a> để sử dụng chức năng này.
+        </div>
+      `;
+    }
+  });
+  function logoutAndReload() {
+    fetch('/logout').then(() => window.location.href = "login.html");
+  }
+  </script>
+</body>
+</html>

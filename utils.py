@@ -5,25 +5,25 @@ import hashlib
 import re
 from datetime import datetime
 from urllib.parse import urlparse, parse_qs
+from flask import send_file
 
-def get_filename_from_url(url):
-    parsed_url = urlparse(url)
-    if "drive.google.com" in url:
-        if "id=" in url:
-            file_id = parse_qs(parsed_url.query).get("id", [None])[0]
-        else:
-            file_id = parsed_url.path.split("/")[-2]
-        return f"gdrive_{file_id}"
-    else:
-        raw_name = os.path.basename(parsed_url.path.split("?")[0])
-        clean_name = re.sub(r'[^\w\-_. ]', '_', raw_name)
-        return clean_name or f"file_{hashlib.md5(url.encode()).hexdigest()}"
+def get_filename_from_url(url, response=None):
+    # Ưu tiên lấy tên file từ header nếu có
+    if response:
+        cd = response.headers.get("Content-Disposition")
+        if cd:
+            fname = re.findall('filename="(.+)"', cd)
+            if fname:
+                return fname[0]
+    # Nếu không có, lấy từ URL
+    basename = os.path.basename(url.split("?")[0])
+    if "." in basename:
+        return basename
+    # Nếu vẫn không có đuôi, đặt tên mặc định
+    return "downloaded_file"
 
 def download_file(url, save_dir="media"):
     os.makedirs(save_dir, exist_ok=True)
-    filename = get_filename_from_url(url)
-    save_path = os.path.join(save_dir, filename)
-
     if "drive.google.com" in url:
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
@@ -37,6 +37,13 @@ def download_file(url, save_dir="media"):
         download_url = url
 
     response = requests.get(download_url)
+    filename = get_filename_from_url(download_url, response)
+    save_path = os.path.join(save_dir, filename)
+
+    content_type = response.headers.get("Content-Type", "")
+    if "text/html" in content_type:
+        raise Exception("ĐÂY KHÔNG PHẢI URL ẢNH, VUI LÒNG CHỌN URL HỢP LỆ")
+
     if response.status_code == 200:
         with open(save_path, "wb") as f:
             f.write(response.content)
@@ -89,3 +96,8 @@ def verify_url(url):
     except Exception as e:
         print(f"Lỗi tải file: {e}")
         return False, None, expected_hash
+
+def download_nft_file(nft, backup_path):
+    mimetype = "image/jpeg"  # Giả sử đây là loại MIME của tệp tin hình ảnh
+    filename = nft.get("ORIGINAL_FILENAME", os.path.basename(backup_path))
+    return send_file(backup_path, as_attachment=True, download_name=filename, mimetype=mimetype)

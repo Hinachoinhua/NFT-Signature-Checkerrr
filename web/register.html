@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Đăng ký</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar">
+  <div class="navbar-left">
+    <a href="index.html" class="navbar-logo-link" style="text-decoration:none;">
+      <div class="navbar-logo-box">
+        <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg.png?20240228115915"
+             alt="FPT University Logo" class="navbar-logo">
+        <img src="https://cusc.vn/themes/cusc/images/cusc/logo/CUSC%20Logo%20Series.png"
+             alt="Logo dự án" class="navbar-logo">
+      </div>
+    </a>
+    <span class="navbar-title">NFT Signature Checker</span>
+  </div>
+  <div class="navbar-right">
+    <a href="about.html">Giới thiệu</a>
+    <a href="guide.html">Hướng dẫn sử dụng</a>
+    <a href="history.html">Lịch sử URL</a>
+    <a href="account.html" id="login-link">Tài khoản</a>
+  </div>
+</nav>
+  <div class="register-container">
+    <h2>Đăng ký tài khoản</h2>
+    <form id="register-form" onsubmit="return false;">
+      <input id="register-username" placeholder="Tên đăng nhập" required><br>
+      <input id="register-email" placeholder="Email" required><br>
+      <input id="register-password" type="password" placeholder="Mật khẩu" required><br>
+      <button class="main-action" onclick="register()">Đăng ký</button>
+      <div id="register-msg"></div>
+    </form>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

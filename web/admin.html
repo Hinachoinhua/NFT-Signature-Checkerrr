@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Quản trị tài khoản</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+     <div class="navbar-left">
+      <a href="index.html" class="navbar-logo-link" style="text-decoration:none;">
+        <div class="navbar-logo-box">
+          <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg.png?20240228115915"
+               alt="FPT University Logo" class="navbar-logo">
+          <img src="https://cusc.vn/themes/cusc/images/cusc/logo/CUSC%20Logo%20Series.png"
+               alt="Logo dự án" class="navbar-logo">
+        </div>
+      </a>
+      <span class="navbar-title">NFT Signature Checker</span>
+    </div>
+    <div class="navbar-right">
+      <a href="about.html">Giới thiệu</a>
+      <a href="guide.html">Hướng dẫn sử dụng</a>
+      <a href="history.html">Lịch sử URL</a>
+      <a href="account.html" id="login-link">Tài khoản</a>
+    </div>
+  </nav>
+  <div class="login-container" style="margin-top:40px;">
+    <h2>Quản lý tài khoản người dùng</h2>
+    <div id="user-list"></div>
+  </div>
+  <script>
+    async function loadUsers() {
+      const res = await fetch('/admin/users', { credentials: "include" });
+      if (res.status !== 200) {
+        document.getElementById('user-list').innerHTML = "Bạn không có quyền truy cập trang này.";
+        return;
+      }
+      const users = await res.json();
+      let html = `<table class="admin-table">
+  <tr>
+    <th style="width:60px;">STT</th>
+    <th style="width:180px;">Username</th>
+    <th style="width:220px;">Email</th>
+    <th style="width:90px;">Quyền</th>
+    <th style="width:90px;">Xóa</th>
+  </tr>`;
+      users.forEach((u, idx) => {
+        html += `<tr>
+    <td>${idx + 1}</td>
+    <td>
+      <a href="history.html?user=${encodeURIComponent(u.username)}" style="color:#ffd700;text-decoration:underline;cursor:pointer;">
+        ${u.username}
+      </a>
+    </td>
+    <td>${u.email}</td>
+    <td>${u.is_admin ? "Admin" : "User"}</td>
+    <td>${u.is_admin ? "" : `<button onclick="deleteUser(${u.id})">Xóa</button>`}</td>
+  </tr>`;
+      });
+      html += `</table>`;
+      document.getElementById('user-list').innerHTML = html;
+    }
+    async function deleteUser(id) {
+      if (!confirm("Bạn chắc chắn muốn xóa tài khoản này?")) return;
+      const res = await fetch('/admin/delete_user', {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify({user_id: id})
+      });
+      const data = await res.json();
+      if (data.status === "ok") {
+        loadUsers();
+      } else {
+        alert(data.msg || "Lỗi xóa tài khoản!");
+      }
+    }
+    window.onload = loadUsers;
+  </script>
+</body>
+</html>

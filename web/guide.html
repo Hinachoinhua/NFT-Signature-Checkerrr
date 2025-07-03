@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hướng dẫn sử dụng - NFT Signature Checker</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Quicksand:400,600,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a href="index.html" class="navbar-logo-link" style="text-decoration:none;">
+        <div class="navbar-logo-box">
+          <img src="https://upload.wikimedia.org/wikipedia/vi/thumb/2/2d/Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg/1432px-Logo_Tr%C6%B0%E1%BB%9Dng_%C4%90%E1%BA%A1i_h%E1%BB%8dc_FPT.svg.png?20240228115915"
+               alt="FPT University Logo" class="navbar-logo">
+          <img src="https://cusc.vn/themes/cusc/images/cusc/logo/CUSC%20Logo%20Series.png"
+               alt="Logo dự án" class="navbar-logo">
+        </div>
+      </a>
+      <span class="navbar-title">NFT Signature Checker</span>
+    </div>
+    <div class="navbar-right">
+      <a href="about.html">Giới thiệu</a>
+      <a href="guide.html">Hướng dẫn sử dụng</a>
+      <a href="history.html">Lịch sử URL</a>
+      <a href="account.html" id="login-link">Tài khoản</a>
+    </div>
+  </nav>
+  <section style="margin:40px auto 0 auto;max-width:700px;">
+    <h3>Hướng dẫn sử dụng hệ thống NFT Signature Checker</h3>
+    <p>
+      <b>NFT Signature Checker</b> là công cụ giúp bạn bảo vệ, xác thực và quản lý tài sản số (ảnh, video, tài liệu...) bằng công nghệ chữ ký số (hash) hiện đại. Dưới đây là hướng dẫn chi tiết từng bước sử dụng hệ thống:
+    </p>
+    <ol style="line-height:1.8;">
+      <li>
+        <b>Bước 1: Chuẩn bị URL tài sản số</b><br>
+        - Đảm bảo bạn có đường dẫn (URL) trực tiếp đến file ảnh, video hoặc tài liệu số cần gắn hoặc kiểm tra chữ ký.<br>
+        - URL phải là đường dẫn công khai, có thể truy cập trực tiếp từ Internet (ví dụ: Google Drive chia sẻ công khai, Dropbox, Imgur, v.v.).<br>
+        - Không sử dụng link của trang web HTML, chỉ dùng link file thực (có đuôi .jpg, .png, .mp4, .pdf...).
+      </li>
+      <li>
+        <b>Bước 2: Gắn chữ ký NFT cho tài sản số</b><br>
+        - Tại trang chủ, nhập URL vào ô "Nhập URL ảnh/video".<br>
+        - Nhấn nút <b>"Gắn chữ ký"</b>.<br>
+        - Hệ thống sẽ tự động tải file về, tạo mã hash duy nhất cho nội dung file và lưu lại bản gốc trên server.<br>
+        - Nếu tài sản đã từng được gắn chữ ký, hệ thống sẽ thông báo và không tạo lại để tránh trùng lặp.<br>
+        - Sau khi gắn chữ ký thành công, bạn sẽ nhận được thông báo kèm mã hash của tài sản số.
+      </li>
+      <li>
+        <b>Bước 3: Kiểm tra chữ ký NFT</b><br>
+        - Nhập lại URL tài sản số cần kiểm tra vào ô nhập.<br>
+        - Nhấn nút <b>"Kiểm tra"</b>.<br>
+        - Hệ thống sẽ tải file hiện tại, tạo mã hash và so sánh với mã hash đã lưu.<br>
+        - Nếu nội dung không thay đổi, hệ thống xác nhận tài sản số còn nguyên vẹn.<br>
+        - Nếu phát hiện thay đổi (file bị chỉnh sửa, giả mạo...), hệ thống sẽ cảnh báo và hiển thị thông tin khác biệt.
+      </li>
+      <li>
+        <b>Bước 4: Xem lịch sử các URL đã gắn chữ ký</b><br>
+        - Nhấn vào mục <b>"Lịch sử URL"</b> trên thanh điều hướng.<br>
+        - Trang lịch sử sẽ hiển thị danh sách tất cả các URL đã được gắn chữ ký, kèm thời gian, mã hash và trạng thái.<br>
+        - Bạn có thể nhấn vào từng URL để kiểm tra lại hoặc tải về bản gốc.
+      </li>
+      <li>
+        <b>Bước 5: Khôi phục bản gốc tài sản số</b><br>
+        - Nếu phát hiện tài sản số đã bị thay đổi, hệ thống sẽ tự động gửi email cảnh báo về địa chỉ email bạn đã đăng ký.<br>
+        - Trong email cảnh báo sẽ có đường dẫn để tải lại bản gốc đã lưu trên hệ thống, giúp bạn dễ dàng khôi phục và bảo vệ bản quyền nội dung.
+      </li>
+      <li>
+        <b>Bước 6: Một số lưu ý khi sử dụng hệ thống</b>
+        <ul>
+          <li>Chỉ sử dụng URL của các file thực sự (không dùng link HTML, trang web).</li>
+          <li>Đảm bảo file tải về là đúng file gốc, không bị đổi tên hoặc đổi định dạng.</li>
+          <li>Không chia sẻ link tài sản số cho người không tin cậy để tránh bị chỉnh sửa hoặc giả mạo.</li>
+          <li>Hệ thống hỗ trợ các định dạng phổ biến: PNG, JPG, JPEG, HEIC, MP4, PDF, DOCX, v.v.</li>
+          <li>Nếu gặp lỗi khi tải file hoặc kiểm tra chữ ký, hãy kiểm tra lại URL hoặc liên hệ hỗ trợ.</li>
+          <li>Để tăng bảo mật, hãy thường xuyên kiểm tra chữ ký các tài sản số quan trọng.</li>
+        </ul>
+      </li>
+      <li>
+        <b>Bước 7: Một số tình huống thực tế và giải pháp</b>
+        <ul>
+          <li><b>Trường hợp 1:</b> Bạn phát hiện file ảnh/video của mình bị chỉnh sửa trên Internet.<br>
+            &rarr; Hệ thống sẽ tự động gửi email cảnh báo cho bạn kèm đường dẫn tải lại bản gốc để bảo vệ bản quyền.</li>
+          <li><b>Trường hợp 2:</b> Bạn muốn xác thực một file do người khác gửi.<br>
+            &rarr; Hãy yêu cầu họ cung cấp URL đã được gắn chữ ký trên hệ thống, sau đó kiểm tra lại để xác thực nguồn gốc.</li>
+          <li><b>Trường hợp 3:</b> Bạn cần chứng minh quyền sở hữu tài sản số.<br>
+            &rarr; Sử dụng mã hash và lịch sử gắn chữ ký trên hệ thống làm bằng chứng pháp lý.</li>
+        </ul>
+      </li>
+      <li>
+        <b>Bước 8: Liên hệ hỗ trợ</b><br>
+        - Nếu gặp bất kỳ khó khăn nào trong quá trình sử dụng, vui lòng liên hệ:<br>
+        &nbsp;&nbsp;+ Email: TramNKCE180138@fpt.edu.vn<br>
+        &nbsp;&nbsp;+ Hotline: 0765936972 (Mr. Hào)<br>
+        &nbsp;&nbsp;+ Địa chỉ: 600 Nguyễn Văn Cừ, phường An Bình, thành phố Cần Thơ
+      </li>
+    </ol>
+    <p>
+      <b>Chúc bạn sử dụng hệ thống hiệu quả và an toàn!</b>
+    </p>
+  </section>
+  <div style="width:100%;text-align:center;margin:40px 0 20px 0;">
+    <button class="main-action" style="min-width:120px;" onclick="window.location.href='index.html'">
+      Trang chủ
+    </button>
+  </div>
+</body>
+</html>

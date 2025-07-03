@@ -1,206 +1,513 @@
 body {
-  background: linear-gradient(120deg, #0f2027 0%, #2c5364 100%);
-  font-family: 'Quicksand', Arial, Helvetica, Tahoma, Verdana, sans-serif;
+  background: linear-gradient(120deg, #232526 0%, #414345 100%);
+  font-family: 'Segoe UI', 'Quicksand', Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  color: #f3f3f3;
+  font-size: 12px; /* Nhỏ hơn nữa cho toàn trang */
 }
 
-.logo-fpt {
-  width: 120px;
-  margin-top: 40px;
-  margin-bottom: 18px;
+#main-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 36px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 18px #222;
+  padding: 6px 24px;      /* Giảm padding dọc từ 12px xuống 6px */
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.logo-fpt,
+.logo-project {
+  width: 60px;            /* Giảm chiều cao logo */
+  height: 60px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+  border: none;
   display: block;
-  border-radius: 20px;
-  box-shadow: 0 0 32px 0 #00fff7, 0 0 0 8px #ff00cc;
-  border: 3px solid #ff00cc;
-  background: #181a1b;
-  padding: 10px;
-  transition: box-shadow 0.2s, transform 0.2s;
-  filter: brightness(1.1) contrast(1.2);
-}
-.logo-fpt:hover {
-  box-shadow: 0 0 64px 12px #00fff7, 0 0 0 16px #ff00cc;
-  transform: scale(1.07) rotate(-2deg);
-}
-
-h1 {
-  color: #0066cc;
 }
 
 h2 {
   margin-top: 18px;
-  color: #fff;
-  letter-spacing: 2px;
-  font-weight: 800;
-  font-size: 2rem;
-  text-shadow: 0 0 12px #00fff7, 0 0 32px #ff00cc, 2px 2px 0 #181a1b;
-  border: none;
-  border-radius: 20px;
-  padding: 14px 36px;
-  background: rgba(24, 26, 27, 0.85);
-  box-shadow: 0 0 32px #ff00cc55;
+  color: #ffd700;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 0.9rem; /* Nhỏ hơn nữa cho tiêu đề */
+  text-shadow: 0 2px 8px #222;
+  border-radius: 14px;
+  padding: 10px 28px;
+  background: rgba(34,36,38,0.85);
+  box-shadow: 0 2px 12px #222;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   position: relative;
   z-index: 2;
 }
 h2::before {
-  content: "💾";
-  font-size: 2rem;
-  margin-right: 10px;
-  filter: drop-shadow(0 0 8px #00fff7);
-  animation: glow 2s infinite alternate;
-}
-@keyframes glow {
-  0% { filter: drop-shadow(0 0 8px #00fff7);}
-  100% { filter: drop-shadow(0 0 24px #ff00cc);}
-}
-
-#result {
-  margin-top: 20px;
-  font-weight: bold;
+  content: "🔗";
+  font-size: 1.3rem;
+  margin-right: 8px;
 }
 
 #url {
-  padding: 14px;
-  border: 2.5px solid #ff00cc;
-  border-radius: 16px;
-  font-size: 1rem;
-  width: 340px;
-  max-width: 90vw;
-  box-shadow: 0 2px 16px #00fff799;
-  background: #181a1b;
-  color: #fff;
-  margin-top: 12px;
+  padding: 10px;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  width: 620px;        /* Dài hơn nữa cho ô input URL */
+  max-width: 98vw;
+  box-shadow: 0 2px 8px #222;
+  background: #fff;
+  color: #222;
+  margin-top: 10px;
   transition: border 0.2s, box-shadow 0.2s;
 }
 #url:focus {
-  border: 2.5px solid #00fff7;
+  border: 2px solid #ff9800;
   outline: none;
-  box-shadow: 0 0 24px #ff00cc;
-  background: #222;
+  box-shadow: 0 0 12px #ffd700;
 }
 
 button {
-  background: linear-gradient(90deg, #ff00cc 0%, #00fff7 100%);
-  color: #181a1b;
-  border: 2.5px solid #00fff7;
-  border-radius: 16px;
-  padding: 14px 32px;
-  margin: 12px 8px;
-  font-size: 1rem;
+  font-family: 'Segoe UI', 'Quicksand', Arial, Helvetica, sans-serif;
+  background: linear-gradient(90deg, #ffd700 0%, #ff9800 100%);
+  color: #222;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 10px 24px;
+  margin: 10px 8px;
+  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
   cursor: pointer;
   transition: background 0.2s, transform 0.1s, box-shadow 0.2s, color 0.2s;
-  box-shadow: 0 2px 16px #ff00cc99;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-shadow: 0 1px 0 #fff, 0 0 8px #00fff7;
+  box-shadow: 0 2px 8px #222;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #fff;
   position: relative;
   overflow: hidden;
 }
 button:hover {
-  background: linear-gradient(90deg, #00fff7 0%, #ff00cc 100%);
+  background: linear-gradient(90deg, #ff9800 0%, #ffd700 100%);
   color: #fff;
-  transform: scale(1.06) rotate(-2deg);
-  box-shadow: 0 0 32px #00fff7;
-}
-button::after {
-  content: "⚡";
-  position: absolute;
-  right: 12px;
-  top: 8px;
-  font-size: 1.2rem;
-  animation: cyber-glow 1s infinite alternate;
-}
-@keyframes cyber-glow {
-  0% { opacity: 0.6; filter: blur(0);}
-  100% { opacity: 1; filter: blur(2px);}
+  transform: scale(1.03);
+  box-shadow: 0 0 16px #ffd700;
 }
 
 #output {
-  background: #181a1b;
-  border: 2.5px solid #00fff7;
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 28px;
-  width: 420px;
-  max-width: 95vw;
-  min-height: 40px;
-  font-size: 1rem;
-  color: #00fff7;
-  box-shadow: 0 2px 24px #ff00cc99;
+  background: #fff;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 18px;
+  width: 620px;        /* Dài hơn nữa cho ô output */
+  max-width: 98vw;
+  min-height: 36px;
+  font-size: 0.78rem;
+  color: #222;
+  box-shadow: 0 2px 12px #222;
   white-space: pre-wrap;
   word-break: break-word;
-  font-weight: 700;
-  text-shadow: 0 0 8px #ff00cc;
+  font-weight: 500;
+  text-shadow: 0 1px 0 #fff;
 }
 
-#team {
-  background: rgba(24, 26, 27, 0.95);
-  border-radius: 20px;
-  box-shadow: 0 0 32px #ff00cc99, 0 0 0 4px #00fff7;
-  padding: 28px 36px;
-  margin: 26px 0 16px 0;
-  width: 420px;
-  max-width: 95vw;
-  border: 2px solid #ff00cc;
+#output code {
+  background: #eee;
+  color: #222;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-family: 'Fira Mono', 'Consolas', monospace;
+}
+
+footer#team {
+  flex-shrink: 0;
+  width: 100%;
+  background: #232526;
+  border-top: 1px solid #444;
+  box-shadow: 0 -2px 12px #111;
+  padding: 24px 0 16px 0;
+  margin-top: 32px;
   text-align: center;
 }
 #team h3 {
-  margin-top: 0;
-  color: #00fff7;
-  font-size: 1.15rem;
-  font-weight: 800;
+  color: #ffd700;
+  font-size: 0.85rem; /* Nhỏ hơn nữa cho tiêu đề phụ */
+  font-weight: 700;
+  margin-bottom: 10px;
   letter-spacing: 1px;
-  text-shadow: 0 1px 0 #ff00cc;
 }
 #team ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  display: inline-block;
+  text-align: left;
 }
 #team li {
-  margin: 10px 0;
-  font-size: 1rem;
+  margin: 6px 0;
+  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  background: #181a1b;
-  border-radius: 12px;
-  padding: 8px 18px;
-  border-left: 4px solid #00fff7;
-  border-right: 4px solid #ff00cc;
-  transition: background 0.2s, transform 0.2s, color 0.2s;
-  box-shadow: 0 2px 12px #ff00cc33;
-  text-shadow: 0 0 8px #00fff7;
-}
-#team li:hover {
-  background: #ff00cc;
-  color: #00fff7;
-  transform: scale(1.04) skew(-2deg, 2deg);
+  font-weight: 500;
+  padding-left: 10px;
+  position: relative;
 }
 #team li::before {
-  content: "🚀";
-  font-size: 1.1rem;
-  filter: drop-shadow(0 0 6px #00fff7);
-  animation: shake 1s infinite alternate;
+  content: "👤";
+  margin-right: 8px;
+  color: #ffd700;
 }
-@keyframes shake {
-  0% { transform: rotate(-8deg);}
-  100% { transform: rotate(8deg);}
+
+#history {
+  width: 100%;
+  max-width: 600px;
+  margin: 24px auto 0 auto;
+  background: #232526;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #111;
+  padding: 18px 24px;
+  color: #ffd700;
+  text-align: center;
+}
+#history h3 {
+  margin-top: 0;
+  font-size: 0.85rem; /* Nhỏ hơn nữa cho tiêu đề phụ */
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+#history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  color: #fff;
+  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
+}
+#history-list li {
+  margin: 6px 0;
+  word-break: break-all;
+  padding-left: 10px;
+  position: relative;
+}
+#history-list li::before {
+  content: "🔗";
+  margin-right: 8px;
+  color: #ffd700;
+}
+#history-list a {
+  color: #fff !important;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.navbar {
+  width: 100%;
+  max-width: 732px;      /* Giới hạn chiều rộng tối đa */
+  margin: 0 auto;        /* Căn giữa taskbar */
+  background: #232526;
+  box-shadow: 0 2px 12px #111;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  height: 38px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.navbar-logo-box {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: #fff;
+  border-radius: 7px;
+  padding: 1px 6px;
+  height: 26px;
+  margin-right: 8px;
+  box-shadow: 0 1px 4px #bbb2;
+}
+
+.navbar-logo {
+  height: 20px;
+  width: 20px;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 3px;
+}
+
+.navbar-title {
+  color: #ffd700;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 1px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 18px;
+  padding-left: 12px;   /* Thêm dòng này để đẩy các chữ vào trong */
+}
+
+.navbar-right a {
+  color: #ffd700;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.78rem;    /* Chữ nhỏ hơn */
+  transition: color 0.2s;
+  padding: 2px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.navbar-right a:hover {
+  color: #ff9800;
+  border-bottom: 2px solid #ff9800;
+}
+
+.navbar-right a.active {
+  color: #ff9800;
+  border-bottom: 2px solid #ff9800;
 }
 
 .main-action {
-  font-family: 'Segoe UI', Arial, sans-serif !important;
+  background: #ffd700;
+  color: #232526;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 24px;
   font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #bbb2;
+  transition: background 0.2s, color 0.2s;
+  margin: 0 4px;
+}
+.main-action:hover {
+  background: #ff9800;
+  color: #fff;
+}
+
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background:rgba(0,0,0,0.3);}
+.modal-content { background:#fff; margin:10% auto; padding:20px; border-radius:8px; width:300px; position:relative;}
+.close { position:absolute; right:10px; top:10px; font-size:20px; cursor:pointer;}
+
+/* Form đăng nhập/đăng ký nhỏ gọn, gần gũi */
+.login-container, .register-container {
+  background: rgba(40, 42, 54, 0.98);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px #0006;
+  max-width: 400px;
+  width: 100%;
+  margin: 40px auto 0 auto;
+  padding: 28px 28px 22px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ffd70033;
+  position: relative;
+  animation: fadeInUp 0.5s cubic-bezier(.39,.575,.56,1) both;
+  backdrop-filter: blur(1.5px);
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(40px);}
+  100% { opacity: 1; transform: translateY(0);}
+}
+
+.login-container h2, .register-container h2 {
+  color: #ffd700;
+  font-size: 1.05rem;
   font-weight: 700;
+  margin-bottom: 14px;
   letter-spacing: 1px;
+  text-shadow: 0 1px 8px #222;
+  text-align: center;
+  width: 100%;
+}
+
+.login-container form, .register-container form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 7px;
+}
+
+.login-container input, .register-container input {
+  width: 100%;
+  padding: 7px 10px;
+  margin: 0;
+  border: 1.5px solid #ffd700;
+  border-radius: 7px;
+  font-size: 0.92rem;
+  background: #f8f8f8;
+  color: #232526;
+  box-shadow: 0 1px 4px #2221;
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.login-container input:focus, .register-container input:focus {
+  border: 1.5px solid #ff9800;
+  box-shadow: 0 0 7px #ffd70099;
+  background: #fffbe7;
+}
+
+.login-container button, .register-container button {
+  width: 100%;
+  margin: 8px 0 0 0;
+  padding: 8px 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  border-radius: 7px;
+  background: linear-gradient(90deg, #ffd700 0%, #ff9800 100%);
+  color: #232526;
+  border: none;
+  box-shadow: 0 1px 6px #bbb2;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  letter-spacing: 0.5px;
+}
+.login-container button:hover, .register-container button:hover {
+  background: linear-gradient(90deg, #ff9800 0%, #ffd700 100%);
+  color: #fff;
+  transform: scale(1.02);
+}
+
+#login-msg, #register-msg {
+  margin-top: 7px;
+  min-height: 18px;
+  color: #ff9800;
+  font-weight: 600;
+  text-align: center;
+  font-size: 0.93rem;
+}
+
+.login-container a, .register-container a {
+  color: #ffd700;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.2s;
+  font-size: 0.93rem;
+}
+
+.login-container a:hover, .register-container a:hover {
+  color: #ff9800;
+}
+
+.login-container .form-footer, .register-container .form-footer {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.93rem;
+  color: #ccc;
+  width: 100%;
+}
+
+/* Bảng quản trị tài khoản */
+.admin-table {
+  width: 100%;
+  max-width: 600px;      /* Giảm chiều rộng tối đa của bảng */
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #232526;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #111a;
+  overflow: hidden;
+  font-size: 0.82rem; /* Chữ nhỏ hơn */
+}
+
+.admin-table th, .admin-table td {
+  padding: 6px 6px;    /* Padding nhỏ hơn */
+  text-align: center;
+  border-bottom: 1px solid #444;
+}
+
+.admin-table th {
+  background: #ffd700;
+  color: #232526;
+  font-weight: 700;
+  font-size: 0.89rem;  /* Chữ nhỏ hơn */
+  letter-spacing: 0.5px;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table td {
+  color: #fff;
+  background: #232526;
+  word-break: break-all;
+  font-size: 0.82rem;  /* Chữ nhỏ hơn */
+}
+
+.admin-table tr:nth-child(even) td {
+  background: #282a36;
+}
+
+.admin-table button {
+  padding: 3px 8px;
+  font-size: 0.82rem;
+  border-radius: 4px;
+  border: none;
+  background: #e53935;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.admin-table button:hover {
+  background: #b71c1c;
+}
+
+/* Container chứa bảng quản trị tài khoản */
+.login-container {
+  max-width: 665px !important;   /* Giảm chiều rộng nền chứa bảng */
+  width: 100%;
+  margin: 45px auto 0 auto;
+  padding: 24px 16px 18px 16px;
+}
+
+@media (max-width: 600px) {
+  .login-container, .register-container {
+    max-width: 98vw;
+    padding: 18px 4vw 18px 4vw;
+  }
 }
