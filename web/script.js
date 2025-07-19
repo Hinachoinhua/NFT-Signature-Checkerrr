@@ -180,3 +180,153 @@ function viewUserHistory(username) {
       // Bạn có thể thay alert bằng modal hoặc render ra bảng tùy ý
     });
 }
+
+function getQueryParam(name) {
+  const url = new URL(window.location.href);
+  return url.searchParams.get(name);
+}
+
+async function fetchUserUrls(username) {
+  const res = await fetch(`/admin/user_history/${encodeURIComponent(username)}`, { credentials: "include" });
+  const data = await res.json();
+  return data.urls || [];
+}
+
+async function fetchOwnUrls() {
+  const res = await fetch("/history", { credentials: "include" });
+  const data = await res.json();
+  return data.urls || [];
+}
+
+async function loadHistoryTable() {
+  let isLoggedIn = false, isAdmin = false, username = null;
+  try {
+    const res = await fetch('/me', { credentials: "include" });
+    if (res.status === 200) {
+      isLoggedIn = true;
+      const me = await res.json();
+      isAdmin = me.is_admin;
+      username = me.username;
+    }
+  } catch {}
+  if (!isLoggedIn) {
+    document.getElementById('history').style.display = "none";
+    document.getElementById('history-check').style.display = "block";
+    document.getElementById('history-content').innerHTML = `
+      <div style="color:#ff9800;font-weight:600;text-align:center;">
+        Bạn chưa đăng nhập tài khoản, vui lòng <a href="login.html">đăng nhập</a> để sử dụng chức năng này.
+      </div>
+    `;
+    return;
+  }
+  document.getElementById('history').style.display = "block";
+  document.getElementById('history-check').style.display = "none";
+  const userParam = getQueryParam("user");
+  let urls = [];
+  if (isAdmin && userParam) {
+    urls = await fetchUserUrls(userParam);
+    document.getElementById("history").querySelector("h3").innerText = `Lịch sử URL của tài khoản: ${userParam}`;
+  } else {
+    urls = await fetchOwnUrls();
+    document.getElementById("history").querySelector("h3").innerText = "Lịch sử các URL đã gắn chữ ký";
+  }
+  renderHistoryTable(urls);
+}
+
+async function renderHistoryTable(urls) {
+  const tbody = document.getElementById("history-tbody");
+  const table = document.getElementById("history-table");
+  const delBtn = document.getElementById("delete-selected");
+  tbody.innerHTML = "";
+  if (!urls || urls.length === 0) {
+    table.style.display = "none";
+    delBtn.style.display = "none";
+    document.getElementById("history").querySelector("h3").innerText = "Không có URL nào.";
+    return;
+  }
+  let rows = await Promise.all(urls.map(async (item, idx) => {
+    // Nếu item là string, chuyển thành object
+    let url = item.url || item;
+    let icon = "⏳", date = "";
+    try {
+      const res = await fetch("/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ url })
+      });
+      const result = await res.json();
+      icon = result["KIỂM TRA"] === true ? "✅" : "❌";
+      date = (result.nft_info && (result.nft_info.DATE || result.nft_info.date)) || "";
+    } catch {}
+    return `<tr>
+      <td>${idx + 1}</td>
+      <td style="word-break:break-all;"><a href="${url}" target="_blank" style="color:#ffd700;text-decoration:underline;">${url}</a></td>
+      <td style="text-align:center;font-size:1.3em;">${icon}</td>
+      <td>${date}</td>
+      <td><button class="delete-url-btn" data-url="${url}">Xoá</button></td>
+    </tr>`;
+  }));
+  tbody.innerHTML = rows.join("");
+  table.style.display = "";
+  if (delBtn) delBtn.style.display = "";
+
+  // Gắn sự kiện xoá từng dòng
+  document.querySelectorAll(".delete-url-btn").forEach(btn => {
+    btn.onclick = async function() {
+      if (!confirm("Bạn chắc chắn muốn xoá URL này?")) return;
+      const url = this.getAttribute("data-url");
+      const res = await fetch("/remove_url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ url })
+      });
+      const result = await res.json();
+      if (result.status === "ok") {
+        this.closest("tr").remove();
+        // Nếu hết dòng thì chỉ hiển thị thông báo, không ẩn bảng
+        if (tbody.children.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ccc;">Không có URL nào.</td></tr>`;
+        }
+      } else {
+        alert(result.msg || "Lỗi xoá URL!");
+      }
+    };
+  });
+}
+
+// Xử lý chọn tất cả
+document.getElementById("select-all").onclick = function() {
+  document.querySelectorAll(".url-checkbox").forEach(cb => cb.checked = this.checked);
+};
+
+// Xử lý xoá các url đã chọn
+document.getElementById("delete-selected").onclick = async function() {
+  const checked = Array.from(document.querySelectorAll(".url-checkbox:checked"));
+  if (checked.length === 0) return alert("Chưa chọn URL nào để xoá!");
+  if (!confirm(`Bạn chắc chắn muốn xoá ${checked.length} URL đã chọn?`)) return;
+  for (const cb of checked) {
+    const res = await fetch("/remove_url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ url: cb.getAttribute("data-url") })
+    });
+    const result = await res.json();
+    if (result.status === "ok") {
+      // Xoá dòng khỏi bảng ngay
+      cb.closest("tr").remove();
+    }
+  }
+  // Ẩn bảng nếu không còn dòng nào
+  const tbody = document.getElementById("history-tbody");
+  if (tbody.children.length === 0) {
+    document.getElementById("history-table").style.display = "none";
+    document.getElementById("delete-selected").style.display = "none";
+    document.getElementById("history").querySelector("h3").innerText = "Không có URL nào.";
+  }
+};
+
+// Gọi hàm khi trang load
+window.addEventListener("DOMContentLoaded", loadHistoryTable);

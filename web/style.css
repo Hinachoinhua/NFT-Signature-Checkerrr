@@ -7,7 +7,8 @@ body {
   margin: 0;
   padding: 0;
   color: #f3f3f3;
-  font-size: 12px; /* Nhỏ hơn nữa cho toàn trang */
+  font-size: 19px; /* Lớn hơn nữa */
+  padding-top: 56px; /* Đúng bằng chiều cao navbar */
 }
 
 #main-content {
@@ -49,7 +50,7 @@ h2 {
   color: #ffd700;
   letter-spacing: 1px;
   font-weight: 600;
-  font-size: 0.9rem; /* Nhỏ hơn nữa cho tiêu đề */
+  font-size: 1.45rem !important; /* Nhỏ hơn nữa cho tiêu đề */
   text-shadow: 0 2px 8px #222;
   border-radius: 14px;
   padding: 10px 28px;
@@ -68,16 +69,18 @@ h2::before {
 }
 
 #url {
-  padding: 10px;
-  border: 2px solid #ffd700;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  width: 620px;        /* Dài hơn nữa cho ô input URL */
-  max-width: 98vw;
-  box-shadow: 0 2px 8px #222;
+  padding: 18px 18px;
+  border: 2.5px solid #ffd700;
+  border-radius: 12px;
+  font-size: 1.35rem !important;    /* Chữ lớn hơn */
+  width: 100%;
+  max-width: 1800px;                /* Rộng hơn nữa */
+  min-height: 32px;
+  box-sizing: border-box;
+  box-shadow: 0 3px 12px #222;
   background: #fff;
   color: #222;
-  margin-top: 10px;
+  margin-top: 16px;
   transition: border 0.2s, box-shadow 0.2s;
 }
 #url:focus {
@@ -94,7 +97,7 @@ button {
   border-radius: 10px;
   padding: 10px 24px;
   margin: 10px 8px;
-  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
+  font-size: 1.18rem !important; /* Nhỏ hơn nữa cho các thành phần chính */
   cursor: pointer;
   transition: background 0.2s, transform 0.1s, box-shadow 0.2s, color 0.2s;
   box-shadow: 0 2px 8px #222;
@@ -113,16 +116,16 @@ button:hover {
 
 #output {
   background: #fff;
-  border: 2px solid #ffd700;
-  border-radius: 10px;
-  padding: 14px;
-  margin-top: 18px;
-  width: 620px;        /* Dài hơn nữa cho ô output */
-  max-width: 98vw;
-  min-height: 36px;
-  font-size: 0.78rem;
+  border: 2.5px solid #ffd700;
+  border-radius: 12px;
+  padding: 22px 18px;
+  margin-top: 22px;
+  width: 100%;
+  max-width: 1700px;                /* Rộng hơn nữa */
+  min-height: 48px;
+  font-size: 1.35rem !important;     /* Chữ lớn hơn */
   color: #222;
-  box-shadow: 0 2px 12px #222;
+  box-shadow: 0 3px 16px #222;
   white-space: pre-wrap;
   word-break: break-word;
   font-weight: 500;
@@ -136,6 +139,15 @@ button:hover {
   border-radius: 6px;
   font-size: 0.78rem;
   font-family: 'Fira Mono', 'Consolas', monospace;
+}
+
+#output,
+#output code,
+#output pre,
+#output span {
+  font-size: 1.35rem !important;  /* Lớn bằng các chữ khác */
+  font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+  word-break: break-all;
 }
 
 footer#team {
@@ -164,7 +176,7 @@ footer#team {
 }
 #team li {
   margin: 6px 0;
-  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
+  font-size: 1.18rem !important;
   color: #fff;
   font-weight: 500;
   padding-left: 10px;
@@ -189,9 +201,10 @@ footer#team {
 }
 #history h3 {
   margin-top: 0;
-  font-size: 0.85rem; /* Nhỏ hơn nữa cho tiêu đề phụ */
+  font-size: 1.25rem !important; /* Tăng cỡ chữ cho tiêu đề lịch sử */
   font-weight: 700;
   letter-spacing: 1px;
+  color: #ffd700;
 }
 #history-list {
   list-style: none;
@@ -199,7 +212,7 @@ footer#team {
   margin: 0;
   text-align: left;
   color: #fff;
-  font-size: 0.78rem; /* Nhỏ hơn nữa cho các thành phần chính */
+  font-size: 1.18rem !important;
 }
 #history-list li {
   margin: 6px 0;
@@ -227,19 +240,20 @@ footer#team {
 }
 
 .navbar {
-  width: 100%;
-  max-width: 732px;      /* Giới hạn chiều rộng tối đa */
-  margin: 0 auto;        /* Căn giữa taskbar */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  margin: 0;
   background: #232526;
   box-shadow: 0 2px 12px #111;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  height: 38px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  padding: 0;
+  height: 56px;
+  z-index: 1000;
 }
 
 .navbar-left {
@@ -261,8 +275,8 @@ footer#team {
 }
 
 .navbar-logo {
-  height: 20px;
-  width: 20px;
+  height: 32px;
+  width: 32px;
   object-fit: contain;
   background: transparent;
   border-radius: 3px;
@@ -271,7 +285,7 @@ footer#team {
 .navbar-title {
   color: #ffd700;
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 1.25rem !important; /* Tăng cỡ chữ cho tiêu đề */
   letter-spacing: 1px;
 }
 
@@ -287,9 +301,9 @@ footer#team {
   color: #ffd700;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.78rem;    /* Chữ nhỏ hơn */
+  font-size: 1.22rem !important; /* Tăng cỡ chữ cho các link */
   transition: color 0.2s;
-  padding: 2px 0;
+  padding: 6px 0;
   border-bottom: 2px solid transparent;
 }
 
@@ -350,7 +364,7 @@ footer#team {
 
 .login-container h2, .register-container h2 {
   color: #ffd700;
-  font-size: 1.05rem;
+  font-size: 1.45rem !important;
   font-weight: 700;
   margin-bottom: 14px;
   letter-spacing: 1px;
@@ -373,7 +387,7 @@ footer#team {
   margin: 0;
   border: 1.5px solid #ffd700;
   border-radius: 7px;
-  font-size: 0.92rem;
+  font-size: 1.18rem !important;
   background: #f8f8f8;
   color: #232526;
   box-shadow: 0 1px 4px #2221;
@@ -393,7 +407,7 @@ footer#team {
   width: 100%;
   margin: 8px 0 0 0;
   padding: 8px 0;
-  font-size: 0.98rem;
+  font-size: 1.18rem !important;
   font-weight: 700;
   border-radius: 7px;
   background: linear-gradient(90deg, #ffd700 0%, #ff9800 100%);
@@ -450,7 +464,7 @@ footer#team {
   border-radius: 10px;
   box-shadow: 0 2px 8px #111a;
   overflow: hidden;
-  font-size: 0.82rem; /* Chữ nhỏ hơn */
+  font-size: 1.15rem !important;
 }
 
 .admin-table th, .admin-table td {
@@ -503,6 +517,45 @@ footer#team {
   width: 100%;
   margin: 45px auto 0 auto;
   padding: 24px 16px 18px 16px;
+}
+
+/* Đảm bảo các container chính vừa đủ màn hình */
+#main-content,
+.login-container,
+.register-container,
+#output,
+#history,
+.admin-table,
+.navbar {
+  max-width: 98vw !important;
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* Đảm bảo bảng không bị tràn */
+.admin-table {
+  max-width: 98vw !important;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Đảm bảo thanh navbar vừa đủ */
+.navbar {
+  max-width: 98vw !important;
+  width: 100%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* Đảm bảo các input và output không bị tràn */
+#url, #output {
+  width: 100%;
+  max-width: 98vw;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {

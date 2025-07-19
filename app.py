@@ -7,7 +7,7 @@ import shutil
 import mimetypes
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
@@ -97,7 +97,7 @@ def sign_url():
         if not os.path.exists(backup_path):
             shutil.copy2(file_path, backup_path)
 
-        # Lưu đường dẫn bản gốc, tên file gốc, username và email vào nft_info.json
+        # Lưu đường dẫn bản gốc, tên file gốc, username, email và thời gian vào nft_info.json
         with open("nft_info.json", "r+", encoding="utf-8") as f:
             data = json.load(f)
             if url in data:
@@ -111,7 +111,12 @@ def sign_url():
                 row = c.fetchone()
                 user_email = row[0] if row else ""
                 conn.close()
-                data[url]["user_email"] = user_email
+                data[url]["User email"] = user_email
+                # Thêm thời gian vào trường "DATE" (in hoa)
+                data[url]["DATE"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                if "date" in data[url]:
+                    del data[url]["date"]
+                # Ghi đè dữ liệu vào file
                 f.seek(0)
                 json.dump(data, f, indent=2, ensure_ascii=False)
                 f.truncate()
@@ -122,6 +127,8 @@ def sign_url():
 
 @app.route("/verify", methods=["POST"])
 def verify():
+    if "user_id" not in session:
+        return jsonify({"error": "BẠN CẦN ĐĂNG NHẬP ĐỂ SỬ DỤNG CHỨC NĂNG NÀY."}), 401
     url = request.json.get("url")
     match, current, expected = verify_url(url)
     result = {
@@ -133,7 +140,12 @@ def verify():
     try:
         with open("nft_info.json") as f:
             nft_data = json.load(f)
-        result["nft_info"] = nft_data.get(url, {})
+        nft_info = nft_data.get(url, {})
+        # Xoá trường "DATE" (in hoa) nếu còn sót lại
+        nft_info.pop("DATE", None)
+        # Chuyển tất cả key thành in hoa
+        nft_info_upper = {k.upper(): v for k, v in nft_info.items()}
+        result["nft_info"] = nft_info_upper
     except:
         result["nft_info"] = {}
     return jsonify(result)
@@ -154,13 +166,20 @@ def history():
     with open("nft_info.json", "r", encoding="utf-8") as f:
         data = json.load(f)
     if session.get("is_admin"):
-        # Lấy danh sách username đã từng gắn chữ ký
         usernames = list({info.get("username") for info in data.values() if info.get("username")})
         return jsonify({"usernames": usernames})
-    # User thường chỉ thấy url của mình
     username = session.get("username")
-    user_urls = [url for url, info in data.items() if info.get("username") == username]
-    return jsonify({"urls": user_urls})
+    urls = []
+    for url, info in data.items():
+        if isinstance(info, dict) and info.get("username") == username:
+            # Tính trạng thái (True/False) và lấy thời gian
+            match, _, _ = verify_url(url)
+            urls.append({
+                "url": url,
+                "status": match,
+                "date": info.get("DATE") or info.get("date") or ""
+            })
+    return jsonify({"urls": urls})
 
 @app.route("/restore")
 def restore_asset():
@@ -272,12 +291,62 @@ def admin_user_history(username):
     with open("nft_info.json", "r", encoding="utf-8") as f:
         data = json.load(f)
     if username == "admin":
-        # Lấy các url chưa gắn cho user nào (cũ)
-        admin_urls = [url for url, info in data.items() if not info.get("username")]
+        admin_urls = []
+        for url, info in data.items():
+            if not info.get("username") or info.get("username") == "admin":
+                match, _, _ = verify_url(url)
+                admin_urls.append({
+                    "url": url,
+                    "status": match,
+                    "date": info.get("DATE") or info.get("date") or ""
+                })
         return jsonify({"urls": admin_urls})
-    # Lấy url của user thường
-    user_urls = [url for url, info in data.items() if info.get("username") == username]
-    return jsonify({"urls": user_urls})
+    else:
+        user_urls = []
+        for url, info in data.items():
+            if info.get("username") == username:
+                match, _, _ = verify_url(url)
+                user_urls.append({
+                    "url": url,
+                    "status": match,
+                    "date": info.get("DATE") or info.get("date") or ""
+                })
+        return jsonify({"urls": user_urls})
+
+@app.route("/remove_url", methods=["POST"])
+def remove_url():
+    if "user_id" not in session:
+        return jsonify({"status": "fail", "msg": "Chưa đăng nhập"}), 401
+    url = request.json.get("url")
+    if not url:
+        return jsonify({"status": "fail", "msg": "Thiếu URL"}), 400
+
+    # Chỉ cho admin hoặc chủ sở hữu url được xoá
+    with open("nft_info.json", "r+", encoding="utf-8") as f:
+        data = json.load(f)
+        info = data.get(url)
+        if not info:
+            return jsonify({"status": "fail", "msg": "Không tìm thấy URL"}), 404
+        # Kiểm tra quyền
+        if not (session.get("is_admin") or info.get("username") == session.get("username")):
+            return jsonify({"status": "fail", "msg": "Không có quyền xoá URL này"}), 403
+        # Xoá khỏi các file liên quan
+        files = [
+            "signatures/hash_data.json",
+            "nft_info.json",
+            "alerted_hashes.json"
+        ]
+        for file in files:
+            try:
+                with open(file, "r", encoding="utf-8") as ff:
+                    d = json.load(ff)
+                if url in d:
+                    del d[url]
+                    with open(file, "w", encoding="utf-8") as ff:
+                        json.dump(d, ff, indent=2, ensure_ascii=False)
+            except Exception as e:
+                print(f"Lỗi khi xóa url khỏi {file}: {e}")
+    return jsonify({"status": "ok"})
 
 # Phần còn lại của ứng dụng (web/server/CLI...)
 print("Ứng dụng chính đang chạy. Giám sát đang hoạt động nền...")

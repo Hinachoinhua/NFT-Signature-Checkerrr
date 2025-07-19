@@ -35,43 +35,106 @@
     <h2>Lịch sử URL</h2>
     <div id="history-content"></div>
   </div>
+  <!-- Bảng chỉ dùng khi xem URL của từng user -->
+  <table id="history-table" class="admin-table" style="width:100%;margin-top:24px;display:none;">
+    <thead>
+      <tr>
+        <th>STT</th>
+        <th>URL</th>
+        <th>TRẠNG THÁI</th>
+        <th>THỜI GIAN</th>
+        <th>
+          <button id="delete-all" class="main-action" style="padding:4px 12px;">Xoá tất cả</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="history-tbody"></tbody>
+  </table>
   <script>
 function getQueryParam(name) {
   const url = new URL(window.location.href);
   return url.searchParams.get(name);
 }
 
+// BẢNG URL CỦA USER (chỉ khi admin vào từng user)
 async function showUserHistory(username) {
-  // Chỉ admin mới dùng API này
   const res = await fetch(`/admin/user_history/${encodeURIComponent(username)}`, { credentials: "include" });
   const data = await res.json();
-  const list = document.getElementById("history-list");
-  list.innerHTML = "";
-  if (data.urls.length === 0) {
-    list.innerHTML = `<li style="color:#ccc;">Không có URL nào.</li>`;
-  } else {
-    data.urls.forEach(url => {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = url;
-      a.textContent = url;
-      a.target = "_blank";
-      a.style.color = "#fff";
-      a.style.textDecoration = "underline";
-      li.appendChild(a);
-      list.appendChild(li);
-    });
+  const urls = data.urls || [];
+  const table = document.getElementById("history-table");
+  const tbody = document.getElementById("history-tbody");
+  // Ẩn danh sách user
+  document.getElementById("history-list").style.display = "none";
+  tbody.innerHTML = "";
+  if (urls.length === 0) {
+    table.style.display = "";
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ccc;">Không có URL nào.</td></tr>`;
+    document.getElementById("history").style.display = "block";
+    document.getElementById("history").querySelector("h3").innerText = `Lịch sử URL của tài khoản: ${username}`;
+
+    // Đảm bảo nút Trang chủ luôn hiển thị
+    
   }
+  let rows = urls.map((item, idx) => {
+  const icon = item.status === true ? "✅" : "❌";
+  let date = item.date || "";
+  return `<tr>
+    <td>${idx + 1}</td>
+    <td style="word-break:break-all;"><a href="${item.url}" target="_blank" style="color:#ffd700;text-decoration:underline;">${item.url}</a></td>
+    <td style="text-align:center;font-size:1.3em;">${icon}</td>
+    <td>${date}</td>
+    <td><button class="delete-url-btn" data-url="${item.url}">Xoá</button></td>
+  </tr>`;
+});
+  tbody.innerHTML = rows.join("");
+  document.querySelectorAll(".delete-url-btn").forEach(btn => {
+  btn.onclick = async function() {
+    if (!confirm("Bạn chắc chắn muốn xoá URL này?")) return;
+    const url = this.getAttribute("data-url");
+    const res = await fetch("/remove_url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ url })
+    });
+    const result = await res.json();
+    if (result.status === "ok") {
+      this.closest("tr").remove();
+      if (tbody.children.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ccc;">Không có URL nào.</td></tr>`;
+      }
+    } else {
+      alert(result.msg || "Lỗi xoá URL!");
+    }
+  };
+});
+  table.style.display = "";
   document.getElementById("history").style.display = "block";
   document.getElementById("history").querySelector("h3").innerText = `Lịch sử URL của tài khoản: ${username}`;
+
+  // Gắn sự kiện cho nút Xoá tất cả
+  document.getElementById("delete-all").onclick = async function() {
+    if (!confirm("Bạn chắc chắn muốn xoá TẤT CẢ các URL này?")) return;
+    for (const item of urls) {
+      await fetch("/remove_url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ url: item.url })
+      });
+    }
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#ccc;">Không có URL nào.</td></tr>`;
+    // Không cần ẩn bảng, không cần đổi h3
+  };
 }
 
+// DANH SÁCH USER (giữ nguyên)
 async function showAllUsers() {
-  // Lấy danh sách username đã từng gắn chữ ký
   const res = await fetch("/history", { credentials: "include" });
   const data = await res.json();
   const userList = data.usernames || [];
   const list = document.getElementById("history-list");
+  list.style.display = "";
   list.innerHTML = "";
   if (userList.length === 0) {
     list.innerHTML = `<li style="color:#ccc;">Chưa có tài khoản nào gắn chữ ký.</li>`;
@@ -84,6 +147,8 @@ async function showAllUsers() {
   }
   document.getElementById("history").style.display = "block";
   document.getElementById("history").querySelector("h3").innerText = "Danh sách tài khoản đã từng gắn chữ ký";
+  // Ẩn bảng URL nếu có
+  document.getElementById("history-table").style.display = "none";
 }
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -116,28 +181,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   } else if (isAdmin && !userParam) {
     showAllUsers();
   } else {
-    // Người dùng thường chỉ xem lịch sử của mình
+    // Người dùng thường cũng dùng bảng như admin
     const res = await fetch("/history", { credentials: "include" });
     const data = await res.json();
-    const list = document.getElementById("history-list");
-    list.innerHTML = "";
-    if (data.urls.length === 0) {
-      list.innerHTML = `<li style="color:#ccc;">Không có URL nào.</li>`;
-    } else {
-      data.urls.forEach(url => {
-        const li = document.createElement("li");
-        const a = document.createElement("a");
-        a.href = url;
-        a.textContent = url;
-        a.target = "_blank";
-        a.style.color = "#fff";
-        a.style.textDecoration = "underline";
-        li.appendChild(a);
-        list.appendChild(li);
-      });
-    }
     document.getElementById("history").style.display = "block";
     document.getElementById("history").querySelector("h3").innerText = "Lịch sử các URL đã gắn chữ ký";
+    renderHistoryTable(data.urls || []);
   }
 });
   </script>
