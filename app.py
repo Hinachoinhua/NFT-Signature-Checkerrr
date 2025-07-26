@@ -95,7 +95,7 @@ def sign_url():
         os.makedirs(backup_dir, exist_ok=True)
         backup_path = os.path.join(backup_dir, os.path.basename(file_path))
         if not os.path.exists(backup_path):
-            shutil.copy2(file_path, backup_path)
+             shutil.copy2(file_path, backup_path)
 
         # Lưu đường dẫn bản gốc, tên file gốc, username, email và thời gian vào nft_info.json
         with open("nft_info.json", "r+", encoding="utf-8") as f:

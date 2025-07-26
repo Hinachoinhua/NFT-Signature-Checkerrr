@@ -41,8 +41,8 @@ def download_file(url, save_dir="media"):
     save_path = os.path.join(save_dir, filename)
 
     content_type = response.headers.get("Content-Type", "")
-    if "text/html" in content_type:
-        raise Exception("ĐÂY KHÔNG PHẢI URL ẢNH, VUI LÒNG CHỌN URL HỢP LỆ")
+ #   if "text/html" in content_type:
+  #      raise Exception("ĐÂY KHÔNG PHẢI URL ẢNH, VUI LÒNG CHỌN URL HỢP LỆ")
 
     if response.status_code == 200:
         with open(save_path, "wb") as f:
