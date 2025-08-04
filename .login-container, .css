@@ -1,0 +1,15 @@
+.login-container, .register-container {
+  background: rgba(40, 42, 54, 0.98);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px #0006;
+  max-width: 300px;
+  margin: 40px auto 0 auto;
+  padding: 22px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ffd70033;
+  position: relative;
+  animation: fadeInUp 0.5s cubic-bezier(.39,.575,.56,1) both;
+  backdrop-filter: blur(1.5px);
+}
